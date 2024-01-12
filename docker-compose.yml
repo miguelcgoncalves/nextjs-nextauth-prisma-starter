@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  app:
+    depends_on:
+      - db
+    image: node:18.17.1
+    tty: true
+    command: bash -c "yarn install && yarn dev"
+    working_dir: /home/node
+    volumes:
+      - ./:/home/node
+    network_mode: host
+
+  db:
+    image: postgres
+    tty: true
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - ${POSTGRES_PORT}:5432
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
